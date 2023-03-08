@@ -70,7 +70,6 @@ void OM_TELEOP::jointStatesCallback(const sensor_msgs::JointState::ConstPtr &msg
     else if(!msg->name.at(i).compare("joint3"))  temp_angle.at(2) = (msg->position.at(i));
     else if(!msg->name.at(i).compare("joint4"))  temp_angle.at(3) = (msg->position.at(i));
     else if(!msg->name.at(i).compare("joint5"))  temp_angle.at(4) = (msg->position.at(i));
-    else if(!msg->name.at(i).compare("joint6"))  temp_angle.at(5) = (msg->position.at(i));
   }
   present_joint_angle = temp_angle;
 
@@ -174,8 +173,6 @@ void OM_TELEOP::printText()
   printf("l : decrease joint 4 angle\n");
   printf("p : increase joint 5 angle\n");
   printf("; : decrease joint 5 angle\n");
-  printf("[ : increase joint 6 angle\n");
-  printf("] : decrease joint 6 angle\n");
   printf("\n");
   printf("g : gripper open\n");
   printf("f : gripper close\n");
@@ -186,13 +183,12 @@ void OM_TELEOP::printText()
   printf("q to quit\n");
   printf("---------------------------\n");
 
-  printf("Present Joint Angle J1: %.3lf J2: %.3lf J3: %.3lf J4: %.3lf J5: %.3lf J6: %.3lf\n",
+  printf("Present Joint Angle J1: %.3lf J2: %.3lf J3: %.3lf J4: %.3lf J5: %.3lf\n",
          getPresentJointAngle().at(0),
          getPresentJointAngle().at(1),
          getPresentJointAngle().at(2),
          getPresentJointAngle().at(3),
-         getPresentJointAngle().at(4),
-         getPresentJointAngle().at(5));
+         getPresentJointAngle().at(4));
   printf("Present Kinematics Position X: %.3lf Y: %.3lf Z: %.3lf\n",
          getPresentKinematicsPose().at(0),
          getPresentKinematicsPose().at(1),
@@ -251,7 +247,6 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3");
     joint_name.push_back("joint4");
     joint_name.push_back("joint5");
-    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
   else if(ch == 'h' || ch == 'H')
@@ -263,7 +258,6 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3");
     joint_name.push_back("joint4");
     joint_name.push_back("joint5");
-    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
 
@@ -276,7 +270,6 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3");
     joint_name.push_back("joint4");
     joint_name.push_back("joint5");
-    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
   else if(ch == 'j' || ch == 'J')
@@ -288,7 +281,6 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3");
     joint_name.push_back("joint4");
     joint_name.push_back("joint5");
-    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
 
@@ -301,7 +293,6 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3"); goalJoint.at(2) = JOINT_DELTA;
     joint_name.push_back("joint4");
     joint_name.push_back("joint5");
-    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
   else if(ch == 'k' || ch == 'K')
@@ -313,7 +304,6 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3"); goalJoint.at(2) = -JOINT_DELTA;
     joint_name.push_back("joint4");
     joint_name.push_back("joint5");
-    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
 
@@ -326,7 +316,6 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3");
     joint_name.push_back("joint4"); goalJoint.at(3) = JOINT_DELTA;
     joint_name.push_back("joint5");
-    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
   else if(ch == 'l' || ch == 'L')
@@ -338,7 +327,6 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3");
     joint_name.push_back("joint4"); goalJoint.at(3) = -JOINT_DELTA;
     joint_name.push_back("joint5");
-    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
   else if(ch == 'p' || ch == 'P')
@@ -350,7 +338,6 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3");
     joint_name.push_back("joint4");
     joint_name.push_back("joint5"); goalJoint.at(4) = JOINT_DELTA;
-    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
   else if(ch == ';' || ch == ':')
@@ -362,33 +349,9 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3");
     joint_name.push_back("joint4");
     joint_name.push_back("joint5"); goalJoint.at(4) = -JOINT_DELTA;
-    joint_name.push_back("joint6");
     setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
   }
-  else if(ch == '[' || ch == '{')
-  {
-    printf("input : [ \tdecrease(++) joint 6 angle\n");
-    std::vector<std::string> joint_name;
-    joint_name.push_back("joint1");
-    joint_name.push_back("joint2");
-    joint_name.push_back("joint3");
-    joint_name.push_back("joint4");
-    joint_name.push_back("joint5");
-    joint_name.push_back("joint6"); goalJoint.at(5) = JOINT_DELTA;
-    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
-  }
-  else if(ch == ']' || ch == '}')
-  {
-    printf("input : ] \tdecrease(--) joint 6 angle\n");
-    std::vector<std::string> joint_name;
-    joint_name.push_back("joint1");
-    joint_name.push_back("joint2");
-    joint_name.push_back("joint3");
-    joint_name.push_back("joint4");
-    joint_name.push_back("joint5");
-    joint_name.push_back("joint6"); goalJoint.at(5) = -JOINT_DELTA;
-    setJointSpacePathFromPresent(joint_name, goalJoint, PATH_TIME);
-  }
+  
 
 
   else if(ch == 'g' || ch == 'G')
@@ -420,7 +383,6 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3"); joint_angle.push_back(1.5);
     joint_name.push_back("joint4"); joint_angle.push_back(0.0);
     joint_name.push_back("joint5"); joint_angle.push_back(0.8);
-    joint_name.push_back("joint6"); joint_angle.push_back(0.0);
     setJointSpacePath(joint_name, joint_angle, path_time);
   }
   else if(ch == '1')
@@ -435,7 +397,6 @@ void OM_TELEOP::setGoal(char ch)
     joint_name.push_back("joint3"); joint_angle.push_back(0.0);
     joint_name.push_back("joint4"); joint_angle.push_back(0.0);
     joint_name.push_back("joint5"); joint_angle.push_back(0.0);
-    joint_name.push_back("joint6"); joint_angle.push_back(0.0);
     setJointSpacePath(joint_name, joint_angle, path_time);
   }
 }
